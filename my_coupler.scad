@@ -107,4 +107,18 @@ module screw()
             cylinder(d=nutWidth*2*tan(30), h=big, $fn=6);
 }
 
-coupler();
+translate([1.5,0,0])
+intersection()
+{
+    translate([0,-big/2,0])
+        cube([big,big,big]);
+    coupler();
+}
+
+translate([-1.5,0,0])
+intersection()
+{
+    translate([-big,-big/2,0])
+        cube([big,big,big]);
+    coupler();
+}
