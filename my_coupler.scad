@@ -1,13 +1,36 @@
-// nice (and horribly long) variable names for Thingiverse Customizer
+/*
+----- MEASURED DIMENSIONS -----
+Bolt Diameter:  5/16th inch = 7.93mm
+Bolt Length:    35mm -> 25mm
+    - subtract 10mm for washer and nut?
 
-// Height of the coupler, half for the motor shaft and half for the rod
-couplerHeight = 30;
-// External diameter of the coupler
-couplerExternalDiameter = 20;
+Shaft Diameter: 3.9mm
+Shaft Length:   9.75mm
+Difference between Full Shaft and Cutout: 0.6mm
+
+PVC Pipe Average ID: 26.1366mm (1.029 inches)
+*/
+
+// Length of motor shaft
+shaftLen = 9.75;
 // Diameter of the motor shaft
-motorShaftDiameter = 5;
+motorShaftDiameter = 3.9;
+//Depth of notch on flat side shaft
+rodNotch = 0.6;
+
 // Diameter of the rod
 threadedRodDiameter = 7.9;
+// Length of the rod
+rodLen = 25;
+// rodLen = 30/2; //OG
+
+// Height of the coupler, half for the motor shaft and half for the rod
+couplerHeight = rodLen + shaftLen;
+// couplerHeight = 30; //OG
+
+// External diameter of the coupler
+couplerExternalDiameter = 26;
+
 // Diameter of the screw thread
 screwDiameter = 3.4;
 screwHeadDiameter = 7;
@@ -20,17 +43,25 @@ halvesDistance = 0.5;
 
 /* [Hidden] */
 // end of Customizer variables
-// Portion of the shaft inside the coupler
-shaftLen = couplerHeight/2;
-// Portion of the rod inside the coupler
-rodLen = couplerHeight/2;
-shaftScrewsDistance = motorShaftDiameter+screwDiameter+1;
-rodScrewsDistance = threadedRodDiameter+screwDiameter+1;
+shaftScrewsDistance = motorShaftDiameter+screwDiameter+1.5;
+rodScrewsDistance = threadedRodDiameter+screwDiameter+1.5;
 
 $fa = 0.02;
 $fs = 0.25;
 little = 0.01; // just a little number
 big = 100; // just a big number
+
+module shaft()
+{
+    height = shaftLen + 2*little;
+    translate([0,0,-little])
+    difference()
+    {
+        cylinder(d=motorShaftDiameter, h=height);
+        translate([0,(motorShaftDiameter-rodNotch), (height + 2)/2])
+            cube([motorShaftDiameter, motorShaftDiameter,height - 2], center = true);
+    }
+}
 
 module coupler()
 {
@@ -39,8 +70,8 @@ module coupler()
         // main body
         cylinder(d=couplerExternalDiameter, h=shaftLen + rodLen);
         // shaft
-        translate([0,0,-little])
-            cylinder(d=motorShaftDiameter, h=shaftLen+2*little);
+        rotate([0,0,90])
+        shaft();
         // rod
         translate([0,0,shaftLen])
             cylinder(d=threadedRodDiameter, h=rodLen+little);
