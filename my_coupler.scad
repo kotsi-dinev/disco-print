@@ -9,8 +9,33 @@ Shaft Length:   9.75mm
 Difference between Full Shaft and Cutout: 0.6mm
 
 PVC Pipe Average ID: 26.1366mm (1.029 inches)
+
+
+==============================================================================
+        NOTES v1.0
+==============================================================================
+[DONE]  Screw Head Could be a little bigger
+[DONE]  Nuts definitely need to be bigger
+[DONE]  Longer bolt-side of coupler (6.9 mm)
+
+
+- Waaay more wall thickness. Give them boys like 5-10 layers deep? Make it deep
+==============================================================================
+
+--- M4 Bolt Dimensions ---
+--------------------------------------------------------- 
+|   Thread Size |   Major Diameter  | 	Minor Diameter  |
+--------------------------------------------------------- 
+|   M4 	        |   4.0 mm          |   3.242 mm        | 
+--------------------------------------------------------- 
+BOLT HEAD DIAMETER: 6.78 - 7.22mm
+
+--- M4 Nut Dimensions ---
+Flat to Flat (Wrench) width: 7mm (Call it 7.1mm)
+Nut Height: 3mm
 */
 
+//========== Motor Side Coupling ============
 // Length of motor shaft
 shaftLen = 9.75;
 // Diameter of the motor shaft
@@ -18,28 +43,33 @@ motorShaftDiameter = 3.9;
 //Depth of notch on flat side shaft
 rodNotch = 0.6;
 
+//========== Bolt Side Coupling ============
 // Diameter of the rod
 threadedRodDiameter = 7.9;
 // Length of the rod
 rodLen = 25;
-// rodLen = 30/2; //OG
 
+//========== Coupler Body ============
 // Height of the coupler, half for the motor shaft and half for the rod
 couplerHeight = rodLen + shaftLen;
-// couplerHeight = 30; //OG
-
 // External diameter of the coupler
 couplerExternalDiameter = 26;
-
-// Diameter of the screw thread
-screwDiameter = 3.4;
-screwHeadDiameter = 7;
-screwThreadLength = 10;
-// Width across flats of the nut (wrench size)
-nutWidth = 5.7;
-nutThickness = 3;
 // Gap between the two halves
 halvesDistance = 0.5;
+
+//========== Screw ============
+// Diameter of the screw head
+screwHeadDiameter = 7;
+// Diameter of the screw thread
+screwDiameter = 3.4; 
+// Length of the screw
+screwThreadLength = 10;
+
+//========== Hex Nut ============
+// Width across flats of the nut (wrench size)
+nutWidth = 7.1;
+// Thickness of the nut
+nutThickness = 2.8;
 
 /* [Hidden] */
 // end of Customizer variables
