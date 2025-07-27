@@ -53,13 +53,13 @@ rodLen = 25;
 // Height of the coupler, half for the motor shaft and half for the rod
 couplerHeight = rodLen + shaftLen;
 // External diameter of the coupler
-couplerExternalDiameter = 26;
+couplerExternalDiameter = 25;
 // Gap between the two halves
 halvesDistance = 0.5;
 
 //========== Screw ============
 // Diameter of the screw head
-screwHeadDiameter = 7;
+screwHeadDiameter = 7.1;
 // Diameter of the screw thread
 screwDiameter = 3.4; 
 // Length of the screw
