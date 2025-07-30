@@ -66,16 +66,14 @@ module sleeve_face()
 module main()
 {
     
-sleeve_face()
-{
-    #align(BOTTOM) outer_sleeve();
-    align(BOTTOM) inner_sleeve();
-    //align(BOTTOM) pvc();
-}
-}
-module export_top()
-{
-    sleeve_face();
+    sleeve_face()
+    {
+        #align(BOTTOM) outer_sleeve();
+        align(BOTTOM) inner_sleeve();
+        //align(BOTTOM) pvc();
+    }
 }
 
-export_top();
+
+
+main();
