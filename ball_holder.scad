@@ -6,15 +6,22 @@ pvcOD = 33.401;
 
 
 // ====== Sleeve =====
-sleeveTopThick = 12;
+sleeveTopThick = 9;
 
-sleeveOuterThick = 15;
-sleeveOuterHeight = 30;
+sleeveOuterThick = 10;
+sleeveOuterHeight = 35;
 
 sleeveInnerThick = 3;
-sleeveInnerHeight = 10;
+sleeveInnerHeight = 12;
 
+// ==== Tolerances ====
+ballbearingID_tolerance = 0.5;
+ballbearingOD_tolerance = 0.2;
+ballbearingH_tolerance = 0.3;
 
+sleeveOuterID_tolerance = 1;
+sleeveInnerOD_tolerance = 1;
+sleeveInnerID_tolerance = 2;
 big = 100;
 
 module pvc()
@@ -26,14 +33,14 @@ module pvc()
 module outer_sleeve()
 {
     sleeveOuterOD = pvcOD + sleeveOuterThick;
-    tube(h=sleeveOuterHeight, id = pvcOD+2, od = sleeveOuterOD)
+    tube(h=sleeveOuterHeight, id = pvcOD+sleeveOuterID_tolerance, od = sleeveOuterOD)
     children();
 }
 
 module inner_sleeve()
 {
-    sleeveInnerID = pvcID - 2 - sleeveInnerThick;
-    tube(h=sleeveInnerHeight, id = sleeveInnerID, od = pvcID-2)
+    sleeveInnerID = pvcID - sleeveInnerThick - sleeveInnerID_tolerance;
+    tube(h=sleeveInnerHeight, id = sleeveInnerID, od = pvcID-sleeveInnerOD_tolerance)
     children();
 }
 
@@ -41,9 +48,9 @@ module inner_sleeve()
 module sleeve_face()
 {
     bb_info = ball_bearing_info("608");
-    bbID = bb_info[0] + 0.1;
-    bbOD = bb_info[1] + 0.3;
-    bbH = bb_info[2] + 0.2;
+    bbID = bb_info[0] + ballbearingID_tolerance;
+    bbOD = bb_info[1] + ballbearingOD_tolerance;
+    bbH = bb_info[2] + ballbearingH_tolerance;
     diff()
     {
         tag("body") cylinder(h = sleeveTopThick, d=pvcOD + sleeveOuterThick, anchor=TOP)
@@ -55,14 +62,20 @@ module sleeve_face()
     }
 }
 
+
+module main()
+{
+    
 sleeve_face()
 {
     #align(BOTTOM) outer_sleeve();
     align(BOTTOM) inner_sleeve();
+    //align(BOTTOM) pvc();
 }
-//color("red") outer_sleeve();
-//color("blue") inner_sleeve();
-//pvc();
+}
+module export_top()
+{
+    sleeve_face();
+}
 
-//bearing();
-
+export_top();
