@@ -12,13 +12,13 @@ pvcID_tol = 0.2;
 pvcOD_tol = 0.2;
 
 /* ====== Sleeve ====== */
-sleeveTopThick = 10;
+sleeveTopThick = 8;
 
 sleeveOuterThick = 10;
-sleeveOuterHeight = 30;
+sleeveOuterHeight = 5;
 
 sleeveInnerThick = 3;
-sleeveInnerHeight = 10;
+sleeveInnerHeight = 5;
 
 /* ====== Ball Bearings ====== */
 bbOD_tol = 0.1;
@@ -56,9 +56,9 @@ module inner_sleeve()
 module sleeve_face()
 {
     bb_info = ball_bearing_info("608");
-    bbID = bb_info[0] + 0.1;
-    bbOD = bb_info[1] + 0.3;
-    bbH = bb_info[2] + 0.2;
+    bbID = bb_info[0] + bbID_tol;
+    bbOD = bb_info[1] + bbOD_tol;
+    bbH = bb_info[2] + bbH_tol;
     diff()
     {
         tag("body") cylinder(h = sleeveTopThick, d=sleeveOuterOD, anchor=TOP)
