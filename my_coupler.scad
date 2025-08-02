@@ -1,17 +1,14 @@
-//Version 1.2
+//Version 1.3
 
 /*
------ MEASURED DIMENSIONS -----
-Bolt Diameter:  5/16th inch = 7.93mm
-Bolt Length:    35mm -> 25mm
-    - subtract 10mm for washer and nut?
-
-Shaft Diameter: 3.9mm
-Shaft Length:   9.75mm
-Difference between Full Shaft and Cutout: 0.6mm
-
-PVC Pipe Average ID: 26.1366mm (1.029 inches)
-
+==============================================================================
+        NOTES Printed v1.2 -> v1.3
+==============================================================================
+    - Coupler cracked the layers (with the grain) when applying screw pressure, larger screw sizes
+    - Screw Thread Could be a little bigger
+    - Shaft Diameter could be larger, didn't take into account tolerances
+    - Hex Could be a little bigger
+    - Threaded Shaft Could be bigger
 
 ==============================================================================
         NOTES v1.0
@@ -23,6 +20,16 @@ PVC Pipe Average ID: 26.1366mm (1.029 inches)
 
 - Waaay more wall thickness. Give them boys like 5-10 layers deep? Make it deep
 ==============================================================================
+----- MEASURED DIMENSIONS -----
+Bolt Diameter:  5/16th inch = 7.93mm
+Bolt Length:    35mm -> 25mm
+    - subtract 10mm for washer and nut?
+
+Shaft Diameter: 3.9mm
+Shaft Length:   9.75mm
+Difference between Full Shaft and Cutout: 0.6mm
+
+PVC Pipe Average ID: 26.1366mm (1.029 inches)
 
 --- M4 Bolt Dimensions ---
 --------------------------------------------------------- 
@@ -37,17 +44,23 @@ Flat to Flat (Wrench) width: 7mm (Call it 7.1mm)
 Nut Height: 3mm
 */
 
+//======== Tolerances ========
+motorShaftTolerance = 0.4;
+threadedRodTolerance = 0.4;
+screwHeadDiameterTolerance = 0.5;
+screwDiameterTolerance = 0.4;
+nutWidthTolerance = 0.5;
 //========== Motor Side Coupling ============
 // Length of motor shaft
 shaftLen = 9.75;
 // Diameter of the motor shaft
-motorShaftDiameter = 3.9;
+motorShaftDiameter = 3.9 + motorShaftTolerance;
 //Depth of notch on flat side shaft
 rodNotch = 0.6;
 
 //========== Bolt Side Coupling ============
 // Diameter of the rod
-threadedRodDiameter = 7.9;
+threadedRodDiameter = 7.9 + threadedRodTolerance;
 // Length of the rod
 rodLen = 25;
 
@@ -55,28 +68,29 @@ rodLen = 25;
 // Height of the coupler, half for the motor shaft and half for the rod
 couplerHeight = rodLen + shaftLen;
 // External diameter of the coupler
-couplerExternalDiameter = 25;
+couplerExternalDiameter = 24;
 // Gap between the two halves
 halvesDistance = 0.5;
 
 //========== Screw ============
 // Diameter of the screw head
-screwHeadDiameter = 7.1;
+screwHeadDiameter = 7 + screwHeadDiameterTolerance;
 // Diameter of the screw thread
-screwDiameter = 3.5; 
+screwDiameter = 3.5 + screwDiameterTolerance; 
 // Length of the screw
-screwThreadLength = 10;
+screwThreadLength = 14;
 
 //========== Hex Nut ============
 // Width across flats of the nut (wrench size)
-nutWidth = 7.1;
+nutWidth = 7.1 + nutWidthTolerance;
 // Thickness of the nut
-nutThickness = 2.8;
+nutThickness = 3;
+
 
 /* [Hidden] */
 // end of Customizer variables
-shaftScrewsDistance = motorShaftDiameter+screwDiameter+1.5;
-rodScrewsDistance = threadedRodDiameter+screwDiameter+1.5;
+shaftScrewsDistance = motorShaftDiameter+screwDiameter+3;
+rodScrewsDistance = threadedRodDiameter+screwDiameter+3;
 
 $fa = 0.02;
 $fs = 0.25;
@@ -108,10 +122,10 @@ module coupler()
         translate([0,0,shaftLen])
             cylinder(d=threadedRodDiameter, h=rodLen+little);
         // screws
-        translate([0,shaftScrewsDistance/2,shaftLen/2])
+        translate([0,shaftScrewsDistance/2,(shaftLen+2)/2])
             rotate([90,0,90])
                 screw();
-        translate([0,-shaftScrewsDistance/2,shaftLen/2])
+        translate([0,-shaftScrewsDistance/2,(shaftLen+2)/2])
             rotate([90,0,270])
                 screw();
         translate([0,rodScrewsDistance/2,shaftLen+rodLen/2])
@@ -139,7 +153,9 @@ module screw()
             cylinder(d=nutWidth*2*tan(30), h=big, $fn=6);
 }
 
-translate([1.5,0,0])
+
+translate([-3,0,0])
+rotate([0,-90,0])
 intersection()
 {
     translate([0,-big/2,0])
@@ -147,7 +163,8 @@ intersection()
     coupler();
 }
 
-translate([-1.5,0,0])
+translate([3,0,0])
+rotate([0,90,0])
 intersection()
 {
     translate([-big,-big/2,0])
