@@ -1,3 +1,5 @@
+//Version 1.2
+
 /*
 ----- MEASURED DIMENSIONS -----
 Bolt Diameter:  5/16th inch = 7.93mm
@@ -61,7 +63,7 @@ halvesDistance = 0.5;
 // Diameter of the screw head
 screwHeadDiameter = 7.1;
 // Diameter of the screw thread
-screwDiameter = 3.4; 
+screwDiameter = 3.5; 
 // Length of the screw
 screwThreadLength = 10;
 
