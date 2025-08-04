@@ -1,6 +1,10 @@
-//Version 1.3
+//Version 1.4
 
 /*
+==============================================================================
+        NOTES Printed v1.3 -> v1.4
+==============================================================================
+    - Almost everything is great other than the motor shaft. Doesn't fit
 ==============================================================================
         NOTES Printed v1.2 -> v1.3
 ==============================================================================
@@ -31,28 +35,30 @@ Difference between Full Shaft and Cutout: 0.6mm
 
 PVC Pipe Average ID: 26.1366mm (1.029 inches)
 
---- M4 Bolt Dimensions ---
+--- M3 Bolt Dimensions ---
 --------------------------------------------------------- 
 |   Thread Size |   Major Diameter  | 	Minor Diameter  |
 --------------------------------------------------------- 
-|   M4 	        |   4.0 mm          |   3.242 mm        | 
+|   M3 	        |   3.0 mm          |   2.459 mm        | 
 --------------------------------------------------------- 
-BOLT HEAD DIAMETER: 6.78 - 7.22mm
+
+BOLT HEAD DIAMETER: 5.32 - 5.68
 
 --- M4 Nut Dimensions ---
-Flat to Flat (Wrench) width: 7mm (Call it 7.1mm)
+Flat to Flat (Wrench) width: 5mm
 Nut Height: 3mm
 */
 
 //======== Tolerances ========
-motorShaftTolerance = 0.4;
+motorShaftTolerance = 0.3;
 threadedRodTolerance = 0.4;
-screwHeadDiameterTolerance = 0.5;
+screwHeadDiameterTolerance = 0.1;
 screwDiameterTolerance = 0.4;
 nutWidthTolerance = 0.5;
+
 //========== Motor Side Coupling ============
 // Length of motor shaft
-shaftLen = 9.75;
+shaftLen = 9.75 + 0.3;
 // Diameter of the motor shaft
 motorShaftDiameter = 3.9 + motorShaftTolerance;
 //Depth of notch on flat side shaft
@@ -68,21 +74,21 @@ rodLen = 25;
 // Height of the coupler, half for the motor shaft and half for the rod
 couplerHeight = rodLen + shaftLen;
 // External diameter of the coupler
-couplerExternalDiameter = 24;
+couplerExternalDiameter = 25;
 // Gap between the two halves
 halvesDistance = 0.5;
 
 //========== Screw ============
 // Diameter of the screw head
-screwHeadDiameter = 7 + screwHeadDiameterTolerance;
+screwHeadDiameter = 5.68 + screwHeadDiameterTolerance;
 // Diameter of the screw thread
-screwDiameter = 3.5 + screwDiameterTolerance; 
+screwDiameter = 3 + screwDiameterTolerance; 
 // Length of the screw
 screwThreadLength = 14;
 
 //========== Hex Nut ============
 // Width across flats of the nut (wrench size)
-nutWidth = 7.1 + nutWidthTolerance;
+nutWidth = 5 + nutWidthTolerance;
 // Thickness of the nut
 nutThickness = 3;
 
@@ -154,8 +160,7 @@ module screw()
 }
 
 
-translate([-3,0,0])
-rotate([0,-90,0])
+translate([2.5,0,0])
 intersection()
 {
     translate([0,-big/2,0])
@@ -163,8 +168,7 @@ intersection()
     coupler();
 }
 
-translate([3,0,0])
-rotate([0,90,0])
+translate([-2.5,0,0])
 intersection()
 {
     translate([-big,-big/2,0])
