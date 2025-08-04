@@ -1,28 +1,38 @@
-include </home/snooch/repos/BOSL2/std.scad>
-include </home/snooch/repos/BOSL2/ball_bearings.scad>
-// ====== PVC PIPE ======
+//VERSION 1.2
+
+include <BOSL2/std.scad>
+include <BOSL2/ball_bearings.scad>
+
+/* ====== PVC PIPE ====== */
+
 pvcID = 26.137;
 pvcOD = 33.401;
 
+pvcID_tol = 0.4;
+pvcOD_tol = 0.4;
 
-// ====== Sleeve =====
-sleeveTopThick = 9;
+/* ====== Sleeve ====== */
+sleeveTopThick = 11;
 
-sleeveOuterThick = 10;
-sleeveOuterHeight = 35;
+sleeveOuterThick = 8;
+sleeveOuterHeight = 10;
 
 sleeveInnerThick = 3;
-sleeveInnerHeight = 12;
+sleeveInnerHeight = 8;
 
-// ==== Tolerances ====
-ballbearingID_tolerance = 0.5;
-ballbearingOD_tolerance = 0.2;
-ballbearingH_tolerance = 0.3;
+/* ====== Ball Bearings ====== */
+bbOD_tol = 0.4;
+bbID_tol = 0.3;
+bbH_tol = 0.4;
 
-sleeveOuterID_tolerance = 1;
-sleeveInnerOD_tolerance = 1;
-sleeveInnerID_tolerance = 2;
-big = 100;
+/* [Hidden] */
+big = 100; //Just a big number
+
+sleeveOuterID = pvcOD + pvcOD_tol;
+sleeveOuterOD = sleeveOuterID + sleeveOuterThick;
+
+sleeveInnerOD = pvcID - pvcID_tol;
+sleeveInnerID = sleeveInnerOD - sleeveInnerThick;
 
 module pvc()
 {
@@ -32,15 +42,13 @@ module pvc()
 
 module outer_sleeve()
 {
-    sleeveOuterOD = pvcOD + sleeveOuterThick;
-    tube(h=sleeveOuterHeight, id = pvcOD+sleeveOuterID_tolerance, od = sleeveOuterOD)
+    tube(h=sleeveOuterHeight, id = sleeveOuterID, od = sleeveOuterOD)
     children();
 }
 
 module inner_sleeve()
 {
-    sleeveInnerID = pvcID - sleeveInnerThick - sleeveInnerID_tolerance;
-    tube(h=sleeveInnerHeight, id = sleeveInnerID, od = pvcID-sleeveInnerOD_tolerance)
+    tube(h=sleeveInnerHeight, id = sleeveInnerID, od = sleeveInnerOD)
     children();
 }
 
@@ -48,30 +56,26 @@ module inner_sleeve()
 module sleeve_face()
 {
     bb_info = ball_bearing_info("608");
-    bbID = bb_info[0] + ballbearingID_tolerance;
-    bbOD = bb_info[1] + ballbearingOD_tolerance;
-    bbH = bb_info[2] + ballbearingH_tolerance;
+    bbID = bb_info[0] + bbID_tol;
+    bbOD = bb_info[1] + bbOD_tol;
+    bbH = bb_info[2] + bbH_tol;
+    echo(bbH);
     diff()
     {
-        tag("body") cylinder(h = sleeveTopThick, d=pvcOD + sleeveOuterThick, anchor=TOP)
+        tag("body") cylinder(h = sleeveTopThick, d=sleeveOuterOD, anchor=TOP)
         {
             tag("keep") children();
         }
-        tag("remove") color("PURPLE") cylinder(h = big, d = bbID, anchor=TOP);
-        tag("remove") color("BLUE") cylinder(h = bbH, d = bbOD, anchor=TOP);
+        tag("remove") cylinder(h = big, d = bbID, anchor=TOP);
+        tag("remove") cylinder(h = bbH, d = bbOD, anchor=TOP);
     }
 }
 
-
-module main()
+sleeve_face()
 {
-    
-    sleeve_face()
-    {
-        #align(BOTTOM) outer_sleeve();
-        align(BOTTOM) inner_sleeve();
-        //align(BOTTOM) pvc();
-    }
+    align(BOTTOM) color([1,0,0]) outer_sleeve();
+    align(BOTTOM) color([0,1,0]) inner_sleeve();
+    //align(BOTTOM) color([0,0,1,0.5]) pvc();
 }
 
 

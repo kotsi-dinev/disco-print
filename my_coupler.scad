@@ -1,15 +1,18 @@
+//Version 1.4
+
 /*
------ MEASURED DIMENSIONS -----
-Bolt Diameter:  5/16th inch = 7.93mm
-Bolt Length:    35mm -> 25mm
-    - subtract 10mm for washer and nut?
-
-Shaft Diameter: 3.9mm
-Shaft Length:   9.75mm
-Difference between Full Shaft and Cutout: 0.6mm
-
-PVC Pipe Average ID: 26.1366mm (1.029 inches)
-
+==============================================================================
+        NOTES Printed v1.3 -> v1.4
+==============================================================================
+    - Almost everything is great other than the motor shaft. Doesn't fit
+==============================================================================
+        NOTES Printed v1.2 -> v1.3
+==============================================================================
+    - Coupler cracked the layers (with the grain) when applying screw pressure, larger screw sizes
+    - Screw Thread Could be a little bigger
+    - Shaft Diameter could be larger, didn't take into account tolerances
+    - Hex Could be a little bigger
+    - Threaded Shaft Could be bigger
 
 ==============================================================================
         NOTES v1.0
@@ -21,31 +24,49 @@ PVC Pipe Average ID: 26.1366mm (1.029 inches)
 
 - Waaay more wall thickness. Give them boys like 5-10 layers deep? Make it deep
 ==============================================================================
+----- MEASURED DIMENSIONS -----
+Bolt Diameter:  5/16th inch = 7.93mm
+Bolt Length:    35mm -> 25mm
+    - subtract 10mm for washer and nut?
 
---- M4 Bolt Dimensions ---
+Shaft Diameter: 3.9mm
+Shaft Length:   9.75mm
+Difference between Full Shaft and Cutout: 0.6mm
+
+PVC Pipe Average ID: 26.1366mm (1.029 inches)
+
+--- M3 Bolt Dimensions ---
 --------------------------------------------------------- 
 |   Thread Size |   Major Diameter  | 	Minor Diameter  |
 --------------------------------------------------------- 
-|   M4 	        |   4.0 mm          |   3.242 mm        | 
+|   M3 	        |   3.0 mm          |   2.459 mm        | 
 --------------------------------------------------------- 
-BOLT HEAD DIAMETER: 6.78 - 7.22mm
+
+BOLT HEAD DIAMETER: 5.32 - 5.68
 
 --- M4 Nut Dimensions ---
-Flat to Flat (Wrench) width: 7mm (Call it 7.1mm)
+Flat to Flat (Wrench) width: 5mm
 Nut Height: 3mm
 */
 
+//======== Tolerances ========
+motorShaftTolerance = 0.3;
+threadedRodTolerance = 0.4;
+screwHeadDiameterTolerance = 0.1;
+screwDiameterTolerance = 0.4;
+nutWidthTolerance = 0.5;
+
 //========== Motor Side Coupling ============
 // Length of motor shaft
-shaftLen = 9.75;
+shaftLen = 9.75 + 0.3;
 // Diameter of the motor shaft
-motorShaftDiameter = 3.9;
+motorShaftDiameter = 3.9 + motorShaftTolerance;
 //Depth of notch on flat side shaft
 rodNotch = 0.6;
 
 //========== Bolt Side Coupling ============
 // Diameter of the rod
-threadedRodDiameter = 7.9;
+threadedRodDiameter = 7.9 + threadedRodTolerance;
 // Length of the rod
 rodLen = 25;
 
@@ -59,22 +80,23 @@ halvesDistance = 0.5;
 
 //========== Screw ============
 // Diameter of the screw head
-screwHeadDiameter = 7.1;
+screwHeadDiameter = 5.68 + screwHeadDiameterTolerance;
 // Diameter of the screw thread
-screwDiameter = 3.4; 
+screwDiameter = 3 + screwDiameterTolerance; 
 // Length of the screw
-screwThreadLength = 10;
+screwThreadLength = 14;
 
 //========== Hex Nut ============
 // Width across flats of the nut (wrench size)
-nutWidth = 7.1;
+nutWidth = 5 + nutWidthTolerance;
 // Thickness of the nut
-nutThickness = 2.8;
+nutThickness = 3;
+
 
 /* [Hidden] */
 // end of Customizer variables
-shaftScrewsDistance = motorShaftDiameter+screwDiameter+1.5;
-rodScrewsDistance = threadedRodDiameter+screwDiameter+1.5;
+shaftScrewsDistance = motorShaftDiameter+screwDiameter+3;
+rodScrewsDistance = threadedRodDiameter+screwDiameter+3;
 
 $fa = 0.02;
 $fs = 0.25;
@@ -106,10 +128,10 @@ module coupler()
         translate([0,0,shaftLen])
             cylinder(d=threadedRodDiameter, h=rodLen+little);
         // screws
-        translate([0,shaftScrewsDistance/2,shaftLen/2])
+        translate([0,shaftScrewsDistance/2,(shaftLen+2)/2])
             rotate([90,0,90])
                 screw();
-        translate([0,-shaftScrewsDistance/2,shaftLen/2])
+        translate([0,-shaftScrewsDistance/2,(shaftLen+2)/2])
             rotate([90,0,270])
                 screw();
         translate([0,rodScrewsDistance/2,shaftLen+rodLen/2])
@@ -137,7 +159,8 @@ module screw()
             cylinder(d=nutWidth*2*tan(30), h=big, $fn=6);
 }
 
-translate([1.5,0,0])
+
+translate([2.5,0,0])
 intersection()
 {
     translate([0,-big/2,0])
@@ -145,7 +168,7 @@ intersection()
     coupler();
 }
 
-translate([-1.5,0,0])
+translate([-2.5,0,0])
 intersection()
 {
     translate([-big,-big/2,0])
